@@ -6,7 +6,7 @@ Chủ đề game: Cross the road
 - Lấy ý tưởng từ game Crossy Road trên android.
 - Có tham khảo 1 số tutorial trên internet.
 
-LƯU Ý: Code game nằm ở folder "Game version"
+LƯU Ý: Code game nằm ở folder "Game-version"
 
 Cách thức hoạt động của game:
 - Người chơi sẽ là 1 nhân vật cần qua đường.
