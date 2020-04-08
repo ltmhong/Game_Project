@@ -1,0 +1,2 @@
+D:\Coding - Developing\Visual Studio\Cross_the_road\Debug\Cross_the_road.exe
+D:\Coding - Developing\Visual Studio\Cross_the_road\Debug\Cross_the_road.pdb

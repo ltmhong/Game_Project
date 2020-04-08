@@ -1,0 +1,4 @@
+﻿  game.cpp
+D:\Coding - Developing\Visual Studio\Cross_the_road\game.cpp(73,21): warning C4018: '<': signed/unsigned mismatch
+D:\Coding - Developing\Visual Studio\Cross_the_road\game.cpp(145,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Cross_the_road.vcxproj -> D:\Coding - Developing\Visual Studio\Cross_the_road\Debug\Cross_the_road.exe
