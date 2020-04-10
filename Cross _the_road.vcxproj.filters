@@ -21,5 +21,25 @@
     <ClCompile Include="Source code\main_game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source code\class_FontTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source code\class_GameTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source code\functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source code\variables_prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source code\class_FontTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source code\class_GameTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

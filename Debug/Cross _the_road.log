@@ -1,2 +1,21 @@
-﻿  main_game.cpp
-  Cross _the_road.vcxproj -> D:\Git\Game_Project\Debug\Cross _the_road.exe
+﻿  class_FontTexture.cpp
+  class_GameTexture.cpp
+  functions.cpp
+  main_game.cpp
+  Generating Code...
+class_GameTexture.obj : error LNK2005: "struct SDL_Window * g_window" (?g_window@@3PAUSDL_Window@@A) already defined in class_FontTexture.obj
+class_GameTexture.obj : error LNK2005: "struct SDL_Renderer * g_renderer" (?g_renderer@@3PAUSDL_Renderer@@A) already defined in class_FontTexture.obj
+class_GameTexture.obj : error LNK2005: "struct _TTF_Font * g_font" (?g_font@@3PAU_TTF_Font@@A) already defined in class_FontTexture.obj
+functions.obj : error LNK2005: "struct SDL_Window * g_window" (?g_window@@3PAUSDL_Window@@A) already defined in class_FontTexture.obj
+functions.obj : error LNK2005: "struct SDL_Renderer * g_renderer" (?g_renderer@@3PAUSDL_Renderer@@A) already defined in class_FontTexture.obj
+functions.obj : error LNK2005: "struct _TTF_Font * g_font" (?g_font@@3PAU_TTF_Font@@A) already defined in class_FontTexture.obj
+functions.obj : error LNK2005: "class GameTexture player" (?player@@3VGameTexture@@A) already defined in class_GameTexture.obj
+functions.obj : error LNK2005: "class GameTexture background" (?background@@3VGameTexture@@A) already defined in class_GameTexture.obj
+functions.obj : error LNK2005: "class FontTexture g_textTexture" (?g_textTexture@@3VFontTexture@@A) already defined in class_FontTexture.obj
+main_game.obj : error LNK2005: "struct SDL_Window * g_window" (?g_window@@3PAUSDL_Window@@A) already defined in class_FontTexture.obj
+main_game.obj : error LNK2005: "struct SDL_Renderer * g_renderer" (?g_renderer@@3PAUSDL_Renderer@@A) already defined in class_FontTexture.obj
+main_game.obj : error LNK2005: "struct _TTF_Font * g_font" (?g_font@@3PAU_TTF_Font@@A) already defined in class_FontTexture.obj
+main_game.obj : error LNK2005: "class GameTexture player" (?player@@3VGameTexture@@A) already defined in class_GameTexture.obj
+main_game.obj : error LNK2005: "class GameTexture background" (?background@@3VGameTexture@@A) already defined in class_GameTexture.obj
+main_game.obj : error LNK2005: "class FontTexture g_textTexture" (?g_textTexture@@3VFontTexture@@A) already defined in class_FontTexture.obj
+D:\Git\Game_Project\Debug\Cross _the_road.exe : fatal error LNK1169: one or more multiply defined symbols found
