@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 				player.render(SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT - 140);		//Render man to the screen
 
 				//Render current frame
-				g_textTexture.render(50, 50);
+				g_textTexture.render(15, 10);
 
 				SDL_RenderPresent(g_renderer);		//Update screen
 			}

@@ -73,14 +73,14 @@ bool loadMedia()			//Loads media
 {
 	bool success = true;			//Loading success flag
 
-	if (!player.loadFromFile("Photo/tempo_player.png"))
+	if (!player.loadFromFile("Photo/player.png"))
 	{
 		cout << "Failed to load character!" << endl;
 		success = false;
 	}
 
 	//Load background texture
-	if (!background.loadFromFile("Photo/tempo_back.png"))
+	if (!background.loadFromFile("Photo/background01.png"))
 	{
 		cout << "Failed to load background!" << endl;
 		success = false;
@@ -97,7 +97,7 @@ bool loadMedia()			//Loads media
 	{
 		//Render text
 		SDL_Color textColor = { 0, 0, 100 };
-		if (!g_textTexture.loadFromRenderedText("CROSS    THE    ROAD", textColor))
+		if (!g_textTexture.loadFromRenderedText("CROSS    THE    ROAD    GAMEPLAY    SCREEN", textColor))
 		{
 			cout << "Failed to render text texture!" << endl;
 			success = false;
