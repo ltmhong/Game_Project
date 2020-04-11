@@ -20,16 +20,11 @@ private:
 	int height;
 
 public:
-	FontTexture();																	//Initializes variables
-	~FontTexture();																	//Deallocates memory
-	bool loadFromFile(string path);												//Loads image at specified path
+	FontTexture();																//Initializes variables
+	~FontTexture();																//Deallocates memory
 	bool loadFromRenderedText(string textureText, SDL_Color textColor);			//Creates image from font string
 	void free();																//Deallocates texture
-	void setColor(Uint8 red, Uint8 green, Uint8 blue);							//Set color modulation
-	void setBlendMode(SDL_BlendMode blending);									//Set blending
-	void setAlpha(Uint8 alpha);													//Set alpha modulation
-	void render(int x, int y, SDL_Rect* clip = NULL, double angle = 0.0,		//Renders texture at given point
-		SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render(int x, int y);													//Renders texture at given point
 
 	//Gets image dimensions
 	int getWidth();

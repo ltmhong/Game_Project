@@ -73,7 +73,20 @@ bool loadMedia()			//Loads media
 {
 	bool success = true;			//Loading success flag
 
-	g_font = TTF_OpenFont("Font/SFURhythmRegular.ttf", 25);
+	if (!player.loadFromFile("Photo/tempo_player.png"))
+	{
+		cout << "Failed to load character!" << endl;
+		success = false;
+	}
+
+	//Load background texture
+	if (!background.loadFromFile("Photo/tempo_back.png"))
+	{
+		cout << "Failed to load background!" << endl;
+		success = false;
+	}
+	
+	g_font = TTF_OpenFont("Font/SFURhythmRegular.ttf", 50);
 	if (g_font == NULL)
 	{
 		cout << "Failed to load font! SDL_ttf Error: " << TTF_GetError() << endl;
@@ -84,7 +97,7 @@ bool loadMedia()			//Loads media
 	{
 		//Render text
 		SDL_Color textColor = { 0, 0, 100 };
-		if (!g_textTexture.loadFromRenderedText("SCORE:  0", textColor))
+		if (!g_textTexture.loadFromRenderedText("CROSS    THE    ROAD", textColor))
 		{
 			cout << "Failed to render text texture!" << endl;
 			success = false;
