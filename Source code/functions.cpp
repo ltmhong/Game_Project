@@ -8,6 +8,12 @@
 
 using namespace std;
 
+//GLOBAL VARIABLES
+
+SDL_Window* g_window = NULL;					//The window we'll be rendering to
+SDL_Renderer* g_renderer = NULL;				//The window renderer
+TTF_Font* g_font = NULL;						//Global used font
+
 //FUNCTIONS DEFINITIONS
 
 bool init()

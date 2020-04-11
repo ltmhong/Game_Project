@@ -32,7 +32,7 @@ public:
 
 //SCENE TEXTURES
 
-GameTexture player;
-GameTexture background;
+extern GameTexture player;
+extern GameTexture background;
 
 #endif

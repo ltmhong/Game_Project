@@ -7,6 +7,8 @@
 
 using namespace std;
 
+FontTexture g_textTexture;
+
 //CLASS Texture's (CONSTRUCTORS + FUNCTIONS) DEFINITIONS
 
 FontTexture::FontTexture()

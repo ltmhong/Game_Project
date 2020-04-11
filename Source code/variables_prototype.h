@@ -12,9 +12,9 @@ using namespace std;
 
 //GLOBAL VARIABLES
 
-SDL_Window* g_window = NULL;					//The window we'll be rendering to
-SDL_Renderer* g_renderer = NULL;				//The window renderer
-TTF_Font* g_font = NULL;						//Global used font
+extern SDL_Window* g_window;					//The window we'll be rendering to
+extern SDL_Renderer* g_renderer;				//The window renderer
+extern TTF_Font* g_font;						//Global used font
 
 const int SCREEN_WIDTH = 900;
 const int SCREEN_HEIGHT = 700;

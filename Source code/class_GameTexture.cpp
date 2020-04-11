@@ -6,6 +6,9 @@
 
 using namespace std;
 
+GameTexture player;
+GameTexture background;
+
 //CLASS Texture's (CONSTRUCTORS + FUNCTIONS) DEFINITIONS
 
 GameTexture::GameTexture()

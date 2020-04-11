@@ -38,6 +38,6 @@ public:
 
 //FONT TEXTURES
 
-FontTexture g_textTexture;
+extern FontTexture g_textTexture;
 
 #endif
