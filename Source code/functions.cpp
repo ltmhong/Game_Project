@@ -123,11 +123,11 @@ void load() {
 	GameOverText.texture = loadFont(font, "GAME OVER!", 0, 0, 0);
 	GameOverText.position = { (SCREEN_WIDTH - 345) / 2,(SCREEN_HEIGHT - 43) / 2,345,43 };
 
-	Logo.texture = loadImage("Photo/logo.png");
-	Logo.position = { (SCREEN_WIDTH - 764) / 2,(SCREEN_HEIGHT - 170) / 3, 764, 144 };
+	Logo.texture = loadImage("Photo/Title.png");
+	Logo.position = { (SCREEN_WIDTH - 764) / 2,(SCREEN_HEIGHT - 170) / 3, 780, 170 };
 
 	ClickButton.texture = loadImage("Photo/click.png");
-	ClickButton.position = { (SCREEN_WIDTH - 100) / 2,Logo.position.y + 190 , 49, 80 };
+	ClickButton.position = { (SCREEN_WIDTH - 100) / 2,Logo.position.y + 190 , 100, 160 };
 
 	TryAgainButton.texture = loadImage("Photo/again.png");
 	TryAgainButton.position = { (SCREEN_WIDTH - 177) / 2,(SCREEN_HEIGHT / 2) + 150, 162, 107 };
@@ -136,7 +136,7 @@ void load() {
 	PauseButton.position = { SCREEN_WIDTH - 70,70,50,50 };
 
 	PlayerChooseButton.texture = loadImage("Photo/settings.png");
-	PlayerChooseButton.position = { 20,SCREEN_HEIGHT - 120 ,125,100 };
+	PlayerChooseButton.position = { 20, SCREEN_HEIGHT - 100, 125, 80 };
 
 	clickSound = loadSfx("sound/click.wav");
 }
