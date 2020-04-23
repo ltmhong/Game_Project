@@ -1,52 +1,57 @@
-#include <iostream>
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
-#include "variables_prototype.h"
-#include "class_GameTexture.h"
-#include "class_FontTexture.h"
+#include "base_system.h"
+#include <cstdlib>
+#include <ctime>
 
-using namespace std;	
 
-//main() FUNCTION
 
 int main(int argc, char* argv[])
 {
-	//Start up SDL and create window
-	if (!init())
+	init();
+	createWindow();
+	load();
+	srand(time(NULL));
+	while (state != QUIT)
 	{
-		cout << "Failed to initialize!" << endl;
-	}
-	else
-	{
-		//Load media
-		if (!loadMedia())
+		startLoop = SDL_GetTicks();
+		gameEvent = getEvent();
+		draw();
+		if (state != PAUSE) update();
+		switch (state)
 		{
-			cout << "Failed to load media!" << endl;
+			case START:
+				start();
+				break;
+
+			case PLAY:
+				play();
+				break;
+
+			case OUT:
+				eagle();
+				break;
+
+			case PAUSE:
+				pause();
+				break;
+
+			case CHOOSE_PLAYER:
+				choose_player();
+				break;
+
+			case GAME_OVER:
+				game_over();
+				break;
 		}
-		else
-		{
-			bool quit = false;                      //Main loop flag
-			SDL_Event e;                            //Event handler
-			while (!quit)                           //while application is running
-			{
-				while (SDL_PollEvent(&e) != 0)      //Handle events on queue
-					if (e.type == SDL_QUIT) quit = true;
 
-				SDL_SetRenderDrawColor(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(g_renderer);          //Clear screen
+		if (gameEvent == SDL_QUIT) state = QUIT;
+		endLoop = SDL_GetTicks() - startLoop;
+		if (endLoop < delay) SDL_Delay(delay - endLoop);
 
-				background.render(0, 0);										//Render background texture to screen
-				player.render(SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT - 140);		//Render man to the screen
-
-				//Render current frame
-				g_textTexture.render(15, 10);
-
-				SDL_RenderPresent(g_renderer);		//Update screen
-			}
-		}
+		SDL_RenderPresent(g_renderer);
+		SDL_RenderClear(g_renderer);
 	}
-	close();			//Free and close SDL
+
+	close();
 
 	return 0;
 }
