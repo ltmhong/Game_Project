@@ -41,9 +41,10 @@ Mix_Chunk* clickSound;
 
 
 
-void load() {
+void load()
+{
 	grass.texture = loadImage("Photo/grass_pattern.png");
-	grass.position = { 0,0,84,84 };
+	grass.position = { 0, 0, 84, 84 };
 	grass.type = GRASS;
 
 	bush.texture = loadImage("Photo/bush_pattern.png");
@@ -64,10 +65,10 @@ void load() {
 
 
 	Car.texture = loadImage("Photo/car01.png");
-	Car.position = { 0,0,147,71 };
+	Car.position = { 0, 0, 147, 71 };
 	Car.isMoving = true;
 	Car.type = CAR;
-	Car.sfx = loadSfx("sound/car-horn.wav");
+	Car.sfx = loadSfx("sound/car_horn.wav");
 	car2 = loadImage("Photo/car02.png");
 	car3 = loadImage("Photo/car03.png");
 
@@ -77,48 +78,48 @@ void load() {
 	Log.sfx = loadSfx("sound/water.wav");
 
 	Train.texture = loadImage("Photo/train.png");
-	Train.position = { 0,0,384,82 };
+	Train.position = { 0, 0, 384, 82 };
 	Train.type = TRAIN;
 	Train.sfx = loadSfx("sound/train_pass_no_horn.wav");
 
 	Light.texture = loadImage("Photo/green_light.png");
-	Light.position = { 0,0,21,77 };
+	Light.position = { 0, 0, 21, 77 };
 	Light.type = LIGHT;
 	Light.sfx = loadSfx("sound/train_alarm.wav");
 	redLight = loadImage("Photo/red_light.png");
 
 	Eagle.texture = loadImage("Photo/eagle.png");
-	Eagle.position = { 0,0,162,104 };
+	Eagle.position = { 0, 0, 162, 104 };
 	Eagle.type = EAGLE;
 	Eagle.moveSpeed = 20;
-	Eagle.sfx = loadSfx("sound/eagle_hit.wav");
+	Eagle.sfx = loadSfx("sound/eagle.wav");
 
 	Coin.texture = loadImage("Photo/coin1.png");
 	Coin.position = { SCREEN_WIDTH - 50, 50, 84, 84 };
 	Coin.direction = LEFT;
 	Coin.type = COIN;
-	Coin.sfx = loadSfx("sound/coin_tap.wav");
+	Coin.sfx = loadSfx("sound/coin.wav");
 
 	initTiles();
 
-	sheep = loadImage("Photo/player-01.png");
+	sheep = loadImage("Photo/player1.png");
 	cow = loadImage("Photo/player2.png");
 	pig = loadImage("Photo/player3.png");
 	Player.texture = sheep;
 	Player.tile = { columns / 2 , rows - 2 };
 	Player.position = map[Player.tile.x][Player.tile.y].position;
 	Player.type = PLAYER;
-	Player.sfx = loadSfx("sound/car_squish.wav");
+	Player.sfx = loadSfx("sound/smash.wav");
 
-	font = TTF_OpenFont("Font/editundo.ttf", 72);
+	font = TTF_OpenFont("Font/ARCADE_N.TTF", 72);
 	ScoreText.texture = loadFont(font, "0", 255, 255, 255);
-	ScoreText.position = { 10,10,31,42 };
+	ScoreText.position = { 20, 10, 31, 42 };
 
 	TopScoreText.texture = loadFont(font, "HIGH SCORE: 0", 255, 255, 255);
-	TopScoreText.position = { 10,60,81,52 };
+	TopScoreText.position = { 20, 60, 130, 25 };
 
 	CoinText.texture = loadFont(font, "0", 253, 230, 75);
-	CoinText.position = { SCREEN_WIDTH - 70 ,8,20,35 };
+	CoinText.position = { SCREEN_WIDTH - 85 , 10, 39, 50 };
 
 	GameOverText.texture = loadFont(font, "GAME OVER!", 0, 0, 0);
 	GameOverText.position = { (SCREEN_WIDTH - 345) / 2,(SCREEN_HEIGHT - 43) / 2,345,43 };
@@ -133,7 +134,7 @@ void load() {
 	TryAgainButton.position = { (SCREEN_WIDTH - 177) / 2,(SCREEN_HEIGHT / 2) + 150, 162, 107 };
 
 	PauseButton.texture = loadImage("Photo/pause.png");
-	PauseButton.position = { SCREEN_WIDTH - 70,70,50,50 };
+	PauseButton.position = { SCREEN_WIDTH - 70, 70, 50, 50 };
 
 	PlayerChooseButton.texture = loadImage("Photo/settings.png");
 	PlayerChooseButton.position = { 20, SCREEN_HEIGHT - 100, 125, 80 };
@@ -700,8 +701,9 @@ void play() {
 		}
 	}
 	draw(PauseButton.texture, &PauseButton.position);
-	if (clickOnButton(&PauseButton.position))
+	if (clickOnButton(&PauseButton.position) || (gameEvent == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_SPACE))
 		state = PAUSE;
+		
 	updateScore();
 }
 
@@ -724,10 +726,11 @@ void updateScore()
 }
 
 void pause() {
-	SDL_Rect pauseRect = { (SCREEN_WIDTH - 402) / 2, (SCREEN_HEIGHT - 512) / 2, 205, 448 };
+	SDL_Rect pauseRect = { (SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 490) / 2, 305, 448 };
 	draw(PauseButton.texture, &pauseRect);
 
-	if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_LEFT)
+	if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_LEFT
+		|| (gameEvent == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_SPACE))
 		state = PLAY;
 }
 
@@ -757,9 +760,8 @@ void game_over()
 
 	if (maxScore > topScore) topScore = maxScore;
 	string all = "HIGH SCORE: " + to_string(topScore);
-	//strcpy_s(chars, 10, all.c_str());
 	SDL_DestroyTexture(TopScoreText.texture);
-	TopScoreText.texture = loadFont(font, chars, 255, 255, 255);
+	TopScoreText.texture = loadFont(font, all, 255, 255, 255);
 	draw(TopScoreText.texture, &TopScoreText.position);
 
 	if (clickOnButton(&TryAgainButton.position))

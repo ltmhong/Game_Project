@@ -3,12 +3,16 @@
 SDL_Window* g_window;
 SDL_Renderer* g_renderer;
 SDL_Event g_event;
+Mix_Music* g_music = Mix_LoadMUS("sound/back_music.mp3");
 
 bool init()
 {
+	bool success;
 	if ((SDL_Init(SDL_INIT_EVERYTHING) == 0) && (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0) && (TTF_Init() == 0))
-		return true;
-	return false;
+		success = true;
+	else success = false;
+
+	return success;
 }
 
 bool createWindow()

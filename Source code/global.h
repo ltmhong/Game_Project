@@ -14,6 +14,7 @@ using namespace std;
 extern SDL_Window* g_window;
 extern SDL_Renderer* g_renderer;
 extern SDL_Event g_event;
+extern Mix_Music* g_music;
 
 
 

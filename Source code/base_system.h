@@ -49,8 +49,7 @@ extern int startLoop, endLoop;
 extern int cameraSpeed;
 extern int gameEvent;
 extern int rows, columns;
-extern int maxScore, score, topScore, coins;
-extern char chars[10];										//Used in updateScore();
+extern int maxScore, score, coins, topScore;
 extern bool eagleIntersect;
 
 
@@ -58,7 +57,6 @@ extern bool eagleIntersect;
 extern Tile** map;
 
 extern GameState state;
-extern SDL_Rect realPlayerClip;
 
 extern Object Player;
 extern Object Car, Log, Train, Light, Eagle, Coin;
@@ -72,7 +70,7 @@ extern SDL_Texture* sheep;
 extern SDL_Texture* pig;
 
 extern Other ScoreText, Logo, TryAgainButton, ClickButton, GameOverText, PauseButton,
-		PlayerChooseButton, PlayerButton, CoinText, TopScoreText;
+				PlayerChooseButton, PlayerButton, CoinText, TopScoreText;
 
 extern TTF_Font* font;
 extern Mix_Chunk* clickSound;

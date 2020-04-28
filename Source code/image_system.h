@@ -27,9 +27,9 @@ SDL_Texture* loadImage(const char* path)
 //DRAW FUNCTIONS
 
 
-void draw(SDL_Texture* texture, SDL_Rect* srceen, SDL_Rect* dst, bool fullscreen = false)
+void draw(SDL_Texture* texture, SDL_Rect* srceen, SDL_Rect* destination, bool fullscreen = false)
 {
-	if (!fullscreen) SDL_RenderCopy(g_renderer, texture, srceen, dst);
+	if (!fullscreen) SDL_RenderCopy(g_renderer, texture, srceen, destination);
 	else SDL_RenderCopy(g_renderer, texture, srceen, 0);
 }
 
@@ -56,10 +56,10 @@ void drawEx(SDL_Texture* texture, SDL_Rect* destination, SDL_RendererFlip flip, 
 
 //LOAD FONTS
 
-SDL_Texture* loadFont(TTF_Font* font, const char* title, Uint8 r, Uint8 g, Uint8 b)
+SDL_Texture* loadFont(TTF_Font* font, string title, Uint8 r, Uint8 g, Uint8 b)
 {
 	SDL_Color color = { r, g, b, 255};
-	SDL_Surface* surface = TTF_RenderText_Solid(font, title, color);
+	SDL_Surface* surface = TTF_RenderText_Solid(font, title.c_str(), color);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(g_renderer, surface);
 	SDL_FreeSurface(surface);
 	return texture;

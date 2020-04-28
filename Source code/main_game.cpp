@@ -10,6 +10,7 @@ int main(int argc, char* argv[])
 	createWindow();
 	load();
 	srand(time(NULL));
+	
 	while (state != QUIT)
 	{
 		startLoop = SDL_GetTicks();
@@ -43,7 +44,7 @@ int main(int argc, char* argv[])
 				break;
 		}
 
-		if (gameEvent == SDL_QUIT) state = QUIT;
+		if (gameEvent == SDL_QUIT || (gameEvent == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_ESCAPE)) state = QUIT;
 		endLoop = SDL_GetTicks() - startLoop;
 		if (endLoop < delay) SDL_Delay(delay - endLoop);
 
