@@ -13,7 +13,6 @@ int main(int argc, char* argv[])
 	
 	while (state != QUIT)
 	{
-		startLoop = SDL_GetTicks();
 		gameEvent = getEvent();
 		draw();
 		if (state != PAUSE) update();
@@ -45,8 +44,7 @@ int main(int argc, char* argv[])
 		}
 
 		if (gameEvent == SDL_QUIT || (gameEvent == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_ESCAPE)) state = QUIT;
-		endLoop = SDL_GetTicks() - startLoop;
-		if (endLoop < delay) SDL_Delay(delay - endLoop);
+		SDL_Delay(delay);
 
 		SDL_RenderPresent(g_renderer);
 		SDL_RenderClear(g_renderer);

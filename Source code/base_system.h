@@ -13,11 +13,11 @@ struct Object
 {
 	SDL_Rect position;
 	SDL_Texture* texture;
-	ObjectType type;
+	ObjectType type;			//types of objects: cars, logs, coins, trains, etc
 	SDL_Point tile;
 	bool isMoving = false;
-	Direction direction;
-	Mix_Chunk* sfx = NULL;
+	Direction direction;		//direction of objects
+	Mix_Chunk* sfx = NULL;		//sounds that objects create (sfx)
 
 	union
 	{
@@ -29,7 +29,7 @@ struct Object
 
 struct Tile
 {
-	TileType type;
+	TileType type;			//types of the tiles: grass, bush, water, etc
 	SDL_Rect position;
 	SDL_Texture* texture;
 };
@@ -45,18 +45,17 @@ struct Other			//For Fonts, Buttons, logo,... !
 
 //VARIABLES
 
-extern int startLoop, endLoop;
 extern int cameraSpeed;
 extern int gameEvent;
 extern int rows, columns;
-extern int maxScore, score, coins, topScore;
+extern int maxScore, score, coins, highScore;
 extern bool eagleIntersect;
 
 
 
-extern Tile** map;
+extern Tile** map;				//creating tile map
 
-extern GameState state;
+extern GameState state;			//states of game: start, play, pause, gameOver, etc
 
 extern Object Player;
 extern Object Car, Log, Train, Light, Eagle, Coin;
@@ -70,42 +69,43 @@ extern SDL_Texture* sheep;
 extern SDL_Texture* pig;
 
 extern Other ScoreText, Logo, TryAgainButton, ClickButton, GameOverText, PauseButton,
-				PlayerChooseButton, PlayerButton, CoinText, TopScoreText;
+				PlayerChooseButton, PlayerButton, CoinText, HighScoreText;
 
 extern TTF_Font* font;
-extern Mix_Chunk* clickSound;
+extern Mix_Chunk* clickSound;		//the sound when you click mouse button
 
 
 
 //Function Portotypes
 
 
-void load();
+void load();									//load every media that needed
 
-void initTiles();
-void drawTiles();
-void drawObjects();
+void generateTiles(int);						//generate all types of tiles
+void addCar(int);								//add cars
+void addLogs(int);								//COPY FUNCTION - add logs to the river (water)
+void addTrain(int);								//add trains
+void addCoins(int);								//add coins
+void addObjects(int);							//add every objects
 
-void update();
-void checkPlayerStatus();
-void adjustCameraSpeed();
+void initTiles();								//get everything generated and added on the screen
 
-void generateTiles(int);
-void addObjects(int);
-void addCar(int);
-void addStick(int);
-void addTrain(int);
-void addCoins(int);
+void update();									//update everything: state, render, player's action
+void checkPlayerStatus();						
+void adjustCameraSpeed();						//adjust the screen's render to follow player's position
 
-void deleteObjects();
+void deleteObjects();							//delete objects when they are out of the screen
 
-void draw();
-void start();
+void drawTiles();								//draw all Tiles
+void drawObjects();								//draw all objects
+void draw();									//draw everything in the game
+
 void choose_player();
-void play();
+bool clickOnButton(SDL_Rect*);					//check if we click the mouse button
+void play();									//in game
+void start();									//starting game
 void updateScore();
 void pause();
 void eagle();
 void game_over();
-void destroyTiles();
-bool clickOnButton(SDL_Rect*);
+void destroyTiles();							//delete the entire map

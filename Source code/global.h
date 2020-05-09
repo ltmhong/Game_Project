@@ -28,13 +28,13 @@ const int playerSpeed = 10;
 const int trainSpeed = 18;
 const int cameraBaseSpeed = 1;		//speed when player doesn't move (normal speed)
 
-const int maxBushes = 3;			//maximum number of bushes in a row
+const int maxBushes = 2;			//maximum number of bushes in a row
 const int maxLogs = 5;				//maximum number of logs in a row
 const int minLogs = 2;				//minimum number of logs in a row
 const int maxCoins = 2;				//maximum number of coins in a row
 
 const int FPS = 60;					//frames per second
-const int delay = 1000 / FPS;
+const int delay = 1000 / FPS;		//delay the render
 
 
 

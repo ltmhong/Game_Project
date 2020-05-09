@@ -17,7 +17,7 @@ bool init()
 
 bool createWindow()
 {
-	g_window = SDL_CreateWindow("JiLL  being STUPID", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	g_window = SDL_CreateWindow("Cross The Road - by LE THI MINH HONG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 								SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
 	if (g_window != 0)
 	{
@@ -76,7 +76,7 @@ void close()
 	Mix_FreeChunk(Player.sfx);
 
 	SDL_DestroyTexture(ScoreText.texture);
-	SDL_DestroyTexture(TopScoreText.texture);
+	SDL_DestroyTexture(HighScoreText.texture);
 
 	SDL_DestroyTexture(CoinText.texture);
 

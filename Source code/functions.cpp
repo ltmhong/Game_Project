@@ -1,6 +1,5 @@
 #include "base_system.h"
-#include "image_system.h"
-#include "music_system.h"
+#include "media_system.h"
 #include <string>
 
 
@@ -11,7 +10,7 @@ int startLoop, endLoop;
 int cameraSpeed = cameraBaseSpeed;
 int gameEvent;
 int rows, columns;
-int maxScore = 0, score = 0, topScore = 0, coins = 0;
+int maxScore = 0, score = 0, highScore = 0, coins = 0;
 char chars[10] = "";										//Used in updateScore();
 bool eagleIntersect = false;
 
@@ -20,7 +19,6 @@ deque<Object> objects;
 Tile** map = NULL;
 
 GameState state = START;
-SDL_Rect realPlayerClip = { 30,0,40,100 };
 
 Object Player;
 Object Car, Log, Train, Light, Eagle, Coin;
@@ -34,7 +32,7 @@ SDL_Texture* sheep;
 SDL_Texture* pig;
 
 Other ScoreText, Logo, TryAgainButton, ClickButton, GameOverText, PauseButton,
-PlayerChooseButton, PlayerButton, CoinText, TopScoreText;
+PlayerChooseButton, PlayerButton, CoinText, HighScoreText;
 
 TTF_Font* font;
 Mix_Chunk* clickSound;
@@ -115,11 +113,11 @@ void load()
 	ScoreText.texture = loadFont(font, "0", 255, 255, 255);
 	ScoreText.position = { 20, 10, 31, 42 };
 
-	TopScoreText.texture = loadFont(font, "HIGH SCORE: 0", 255, 255, 255);
-	TopScoreText.position = { 20, 60, 130, 25 };
+	HighScoreText.texture = loadFont(font, "HIGH SCORE: 0", 255, 255, 255);
+	HighScoreText.position = { 20, 60, 130, 25 };
 
 	CoinText.texture = loadFont(font, "0", 253, 230, 75);
-	CoinText.position = { SCREEN_WIDTH - 85 , 10, 39, 50 };
+	CoinText.position = { SCREEN_WIDTH - 100 , 15, 39, 50 };
 
 	GameOverText.texture = loadFont(font, "GAME OVER!", 0, 0, 0);
 	GameOverText.position = { (SCREEN_WIDTH - 345) / 2,(SCREEN_HEIGHT - 43) / 2,345,43 };
@@ -188,7 +186,7 @@ void drawObjects()
 
 void update()
 {
-	adjustCameraSpeed();
+	adjustCameraSpeed();										
 
 	for (int y = 0; y < rows; y++)
 		for (int x = 0; x < columns; x++)
@@ -234,7 +232,7 @@ void update()
 			}
 			else
 			{
-				if (objects[i].timer == FPS)		//1 Second Before it move we should change the lamp!!
+				if (objects[i].timer == FPS)		//1 Second mefore it move we should change the lamp!!
 				{
 					objects[i + 1].texture = redLight;
 					playSfx(Light.sfx, 0);
@@ -329,7 +327,7 @@ void checkPlayerStatus()
 		state = GAME_OVER;
 }
 
-void adjustCameraSpeed()
+void adjustCameraSpeed()					//adjust the screen's render to follow player's position
 {
 	if (state == OUT)
 	{
@@ -401,7 +399,7 @@ void addObjects(int row)
 			addCar(row);
 			break;
 		case WATER:
-			addStick(row);
+			addLogs(row);
 			break;
 		case RAIL:
 			addTrain(row);
@@ -438,7 +436,7 @@ void addCar(int row) {
 	}
 }
 
-void addStick(int row)
+void addLogs(int row)
 {
 	Log.position.y = map[0][row].position.y;
 	Log.tile.y = row;
@@ -449,7 +447,7 @@ void addStick(int row)
 			if (objects[i].tile.y == row + 1 && objects[i].type == LOG)
 			{
 				Log.direction = (objects[i].direction == LEFT ? RIGHT : LEFT);
-				Log.isMoving = (objects[i].isMoving ? rand() % 2 : true); //We Cant Have Two Stopped Rivers
+				Log.isMoving = (objects[i].isMoving ? rand() % 2 : true);		//We Can't Have Two Stopped Rivers
 				break;
 			}
 		}
@@ -556,7 +554,7 @@ void draw()
 	if (state != GAME_OVER) draw(Player.texture, &Player.position);		// But If It is alive , Draw It top of Objects!
 	draw(ScoreText.texture, &ScoreText.position);
 
-	Coin.position = { SCREEN_WIDTH - 50,0,50,50 };
+	Coin.position = { SCREEN_WIDTH - 75, 0, 84, 84 };
 	draw(Coin.texture, &Coin.position);
 	draw(CoinText.texture, &CoinText.position);
 }
@@ -670,32 +668,28 @@ void play() {
 				if (map[Player.tile.x][Player.tile.y - 1].type != BUSH)
 				{
 					Player.isMoving = true;
-					Player.direction = UP;
-					//Player.position.y -= playerMoveSpeed;
+					Player.direction = UP;		//Player.position.y -= playerMoveSpeed;
 				}
 				break;
 			case SDLK_RIGHT:
 				if (Player.tile.x + 1 < columns && map[Player.tile.x + 1][Player.tile.y].type != BUSH)
 				{
 					Player.isMoving = true;
-					Player.direction = RIGHT;
-					//Player.position.x += playerMoveSpeed;
+					Player.direction = RIGHT;	//Player.position.x += playerMoveSpeed;
 				}
 				break;
 			case SDLK_LEFT:
 				if (Player.tile.x - 1 >= 0 && map[Player.tile.x - 1][Player.tile.y].type != BUSH)
 				{
 					Player.isMoving = true;
-					Player.direction = LEFT;
-					//Player.position.x -= playerMoveSpeed;
+					Player.direction = LEFT;	//Player.position.x -= playerMoveSpeed;
 				}
 				break;
 			case SDLK_DOWN:
 				if (Player.tile.y + 1 < rows && map[Player.tile.x][Player.tile.y + 1].type != BUSH)
 				{
 					Player.isMoving = true;
-					Player.direction = DOWN;
-					//Player.position.y += playerMoveSpeed;
+					Player.direction = DOWN;	//Player.position.y += playerMoveSpeed;
 				}
 				break;
 		}
@@ -741,7 +735,7 @@ void eagle()
 
 	if (!eagleIntersect && SDL_HasIntersection(&Player.position, &Eagle.position))
 	{
-		Player.position.x = SCREEN_WIDTH;			//Move it to a hidden Area
+		Player.position.x = SCREEN_WIDTH;			//Move it to a hidden area
 		playSfx(Eagle.sfx, 0);
 		eagleIntersect = true;
 	}
@@ -758,11 +752,11 @@ void game_over()
 	draw(GameOverText.texture, &GameOverText.position);
 	draw(TryAgainButton.texture, &TryAgainButton.position);
 
-	if (maxScore > topScore) topScore = maxScore;
-	string all = "HIGH SCORE: " + to_string(topScore);
-	SDL_DestroyTexture(TopScoreText.texture);
-	TopScoreText.texture = loadFont(font, all, 255, 255, 255);
-	draw(TopScoreText.texture, &TopScoreText.position);
+	if (maxScore > highScore) highScore = maxScore;
+	string all = "HIGH SCORE: " + to_string(highScore);
+	SDL_DestroyTexture(HighScoreText.texture);
+	HighScoreText.texture = loadFont(font, all, 255, 255, 255);
+	draw(HighScoreText.texture, &HighScoreText.position);
 
 	if (clickOnButton(&TryAgainButton.position))
 	{
@@ -770,7 +764,7 @@ void game_over()
 		objects.clear();				//Destroy Objects!
 		maxScore = score = coins = 0;
 		updateScore();
-		initTiles();					//ReGenerate The Envirement!
+		initTiles();					//Re-generate the environment!
 		Player.tile = { columns / 2 , rows - 2 };
 		Player.position = map[Player.tile.x][Player.tile.y].position;
 		state = START;
