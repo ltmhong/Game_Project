@@ -5,7 +5,7 @@ Chủ đề game: Cross the road
 
 
 
-Lấy ý tưởng từ game Crossy Road trên android.
+Lấy ý tưởng từ game Crossy Road trên Android và Frogger.
 Có tham khảo thuật toán và logic của 1 số tutorial trên internet.
 
 
@@ -37,17 +37,29 @@ Cách thức hoạt động của game:
 
 
 
-CÁC CHỨC NĂNG ĐÃ HOÀN THIỆN: Logic game
+CÁC CHỨC NĂNG ĐÃ HOÀN THIỆN:
 
-
-CÁC CHỨC NĂNG HIỆN ĐANG CẢI TIẾN:
-
+- Logic game:
+  + Game hoạt động bình thường, không có bug
+  + Game không có lỗi logic
+- Thao tác trong game:
+  + Tương tác bàn phím không có vấn đề
+  + Tương tác bằng chuột đôi khi gặp khó khăn vì nhiều lúc hệ thống nhận diện thành nháy đúp (double click)
+      (Đặc biệt đối với khi nhấn nút "tạm dừng" (pause)
+      
 - Hình ảnh:
-  + Sửa lại và căn chỉnh font chữ
-  + Tile (nước) của dòng sông chưa chuẩn kích cỡ thiết kế so với setting trong game.
-  + Chưa thiết kế xong nhân vật (người chơi)
-  + Sửa lại 1 vài thiết kế khác
- 
- - Âm thanh:
-  + Thay 1 số âm để căn thời gian phù hợp
-  + Thêm nhạc nền cho game thay vì chỉ có nhạc hiệu ứng
+  + Render rõ ràng, đúng với ý tưởng
+  + Đôi lúc xử lý va chạm của người chơi sẽ có chút vấn đề (không phải lỗi logic, sẽ giải thích khi vấn đáp)
+  
+- Âm thanh: đã có đầy đủ hiệu ứng âm thanh cần thiết (bỏ nhạc nền game)
+
+
+
+CÁC CHỨC NĂNG HIỆN ĐANG CẢI TIẾN: không có
+
+
+NHỮNG PHẦN KHÁC ĐANG HOÀN THIỆN:
+
+- Xử lý code gọn gàng, dễ nhìn
+- Xử lý những biến, hàm thừa không dùng đến
+- Comment những giải thích sơ bộ cho các biến, hàm
