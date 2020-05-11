@@ -11,11 +11,11 @@ enum Direction { UP, DOWN, LEFT, RIGHT };
 
 struct Object
 {
-	SDL_Rect position;
+	SDL_Rect position;			//objects' size and position
 	SDL_Texture* texture;
 	ObjectType type;			//types of objects: cars, logs, coins, trains, etc
-	SDL_Point tile;
-	bool isMoving = false;
+	SDL_Point tile;				//coordinates of objects
+	bool isMoving = false;		//check whether the objects (logs) are moving or not
 	Direction direction;		//direction of objects
 	Mix_Chunk* sfx = NULL;		//sounds that objects create (sfx)
 
@@ -29,8 +29,8 @@ struct Object
 
 struct Tile
 {
-	TileType type;			//types of the tiles: grass, bush, water, etc
-	SDL_Rect position;
+	TileType type;				//types of the tiles: grass, bush, water, etc
+	SDL_Rect position;			//position of tiles
 	SDL_Texture* texture;
 };
 
@@ -48,7 +48,7 @@ struct Other			//For Fonts, Buttons, logo,... !
 extern int cameraSpeed;
 extern int gameEvent;
 extern int rows, columns;
-extern int maxScore, score, coins, highScore;
+extern int maxScore, score, coins, highScore;			//we update score with 'maxScore' instead of 'score'
 extern bool eagleIntersect;
 
 
@@ -91,7 +91,7 @@ void addObjects(int);							//add every objects
 void initTiles();								//get everything generated and added on the screen
 
 void update();									//update everything: state, render, player's action
-void checkPlayerStatus();						
+void checkPlayerStatus();						//check player's state: on logs?, fall into water?, crashed?, in/out of the screen?
 void adjustCameraSpeed();						//adjust the screen's render to follow player's position
 
 void deleteObjects();							//delete objects when they are out of the screen
@@ -108,4 +108,5 @@ void updateScore();
 void pause();
 void eagle();
 void game_over();
+
 void destroyTiles();							//delete the entire map

@@ -26,23 +26,10 @@ SDL_Texture* loadImage(const char* path)
 
 //DRAW FUNCTIONS
 
-
-void draw(SDL_Texture* texture, SDL_Rect* srceen, SDL_Rect* destination, bool fullscreen = false)
-{
-	if (!fullscreen) SDL_RenderCopy(g_renderer, texture, srceen, destination);
-	else SDL_RenderCopy(g_renderer, texture, srceen, 0);
-}
-
 void draw(SDL_Texture* texture, SDL_Rect* destination, bool fullscreen = false)
 {
 	if (!fullscreen) SDL_RenderCopy(g_renderer, texture, 0, destination);
 	else SDL_RenderCopy(g_renderer, texture, 0, 0);
-}
-
-void drawEx(SDL_Texture* texture, SDL_Rect* srceen, SDL_Rect* dst, SDL_RendererFlip flip, bool fullscreen = false)
-{
-	if (!fullscreen) SDL_RenderCopyEx(g_renderer, texture, srceen, dst, 0, 0, flip);
-	else SDL_RenderCopyEx(g_renderer, texture, srceen, 0, 0, 0, flip);
 }
 
 void drawEx(SDL_Texture* texture, SDL_Rect* destination, SDL_RendererFlip flip, bool fullscreen = false)
@@ -50,6 +37,7 @@ void drawEx(SDL_Texture* texture, SDL_Rect* destination, SDL_RendererFlip flip, 
 	if (!fullscreen) SDL_RenderCopyEx(g_renderer, texture, 0, destination, 0, 0, flip);
 	else SDL_RenderCopyEx(g_renderer, texture, 0, 0, 0, 0, flip);
 }
+
 
 
 

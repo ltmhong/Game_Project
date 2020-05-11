@@ -46,19 +46,19 @@ void load()
 	grass.type = GRASS;
 
 	bush.texture = loadImage("Photo/bush_pattern.png");
-	bush.position = { 0,0,84,84 };
+	bush.position = { 0, 0, 84, 84 };
 	bush.type = BUSH;
 
 	water.texture = loadImage("Photo/water_pattern.png");
-	water.position = { 0,0,84,84 };
+	water.position = { 0, 0, 84, 84 };
 	water.type = WATER;
 
 	road.texture = loadImage("Photo/road_pattern.png");
-	road.position = { 0,0,84,84 };
+	road.position = { 0, 0, 84, 84 };
 	road.type = ROAD;
 
 	rail.texture = loadImage("Photo/rail_pattern.png");
-	rail.position = { 0,0,84,84 };
+	rail.position = { 0, 0, 84, 84 };
 	rail.type = RAIL;
 
 
@@ -71,7 +71,7 @@ void load()
 	car3 = loadImage("Photo/car03.png");
 
 	Log.texture = loadImage("Photo/log.png");
-	Log.position = { 0,0,84,84 };
+	Log.position = { 0, 0, 84, 84 };
 	Log.type = LOG;
 	Log.sfx = loadSfx("sound/water.wav");
 
@@ -98,7 +98,9 @@ void load()
 	Coin.type = COIN;
 	Coin.sfx = loadSfx("sound/coin.wav");
 
+
 	initTiles();
+
 
 	sheep = loadImage("Photo/player1.png");
 	cow = loadImage("Photo/player2.png");
@@ -140,32 +142,213 @@ void load()
 	clickSound = loadSfx("sound/click.wav");
 }
 
+void generateTiles(int row)
+{
+	TileType rowType = (TileType)(rand() % 4);
+	int rowChance = rand() % 100 + 1;
+	int Trees = 0;
+	for (int x = 0; x < columns; x++)
+	{
+		if (rowChance <= 50)								//rowType == GRASS/BUSH
+		{
+			if (x == 0 || x == columns - 1)					//set BUSH tile on 1st and last column of the screen
+				map[x][row] = bush;
+			else
+			{
+				int chance = rand() % 100 + 1;				//random to set trees type
+				if (chance >= 80 && Trees < maxBushes)
+				{
+					map[x][row] = bush;						//rowType == BUSH
+					Trees++;
+				}
+				else map[x][row] = grass;					//rowType == GRASS
+			}
+		}
+		else if (rowChance <= 70) map[x][row] = road;		//rowType == ROAD
+		else if (rowChance <= 75) map[x][row] = rail;		//rowType == RAIL
+		else if (rowChance <= 100) map[x][row] = water;		//rowType == WATER
+
+		map[x][row].position.x = x * TILE_SIZE;									//set tile to column
+		map[x][row].position.y = map[x][row + 1].position.y - TILE_SIZE;		//set tile to row
+	}
+}
+
+
+void addCar(int row) {
+	Direction dir = (Direction)((rand() % 2) + 2);
+	Car.direction = dir;
+	Car.position.y = map[0][row].position.y + 6;
+	Car.tile.y = row;
+	Car.moveSpeed = (rand() % 5 + 2) * (dir == RIGHT ? 1 : -1);
+	int num = (rand() % 3) + 1;
+	int space = (SCREEN_WIDTH - ((num - 1) * Car.position.w)) / num;
+	int randPos = rand() % SCREEN_WIDTH;
+	for (int i = 0; i < num; i++)
+	{
+		objects.push_back(Car);
+		if (dir == LEFT)
+			objects.back().position.x = SCREEN_WIDTH + (i * (space + Car.position.w)) - randPos;
+		else
+			objects.back().position.x = -Car.position.w - (i * (space + Car.position.w)) + randPos;
+		short int tex = rand() % 3;
+		switch (tex)
+		{
+		case 1:
+			objects.back().texture = car2;
+			break;
+		case 2:
+			objects.back().texture = car3;
+			break;
+		}
+	}
+}
+
+void addLogs(int row)
+{
+	Log.position.y = map[0][row].position.y;
+	Log.tile.y = row;
+	if (map[0][row + 1].type == WATER)			// Direction of two rivers should be diffrent.
+	{
+		for (int i = objects.size() - 1; i >= 0; i--)
+		{
+			if (objects[i].tile.y == row + 1 && objects[i].type == LOG)
+			{
+				Log.direction = (objects[i].direction == LEFT ? RIGHT : LEFT);
+				Log.isMoving = (objects[i].isMoving ? rand() % 2 : true);		//We Can't Have Two Stopped Rivers
+				break;
+			}
+		}
+	}
+	else
+	{
+		Log.isMoving = rand() % 2;
+		Log.direction = (Direction)((rand() % 2) + 2);
+	}
+
+	if (Log.isMoving)
+	{
+		Log.moveSpeed = (rand() % 3 + 1) * (Log.direction == RIGHT ? 1 : -1);
+		int num = (rand() % 4) + 3;
+		int space = (SCREEN_WIDTH - ((num - 1) * Log.position.w)) / num;
+		int randPos = rand() % 200;
+		for (int i = 0; i < num; i++)
+		{
+			objects.push_back(Log);
+			if (Log.direction == LEFT)
+				objects.back().position.x = randPos + (i * (space + Log.position.w));
+			else
+				objects.back().position.x = SCREEN_WIDTH - randPos - (i * (space + Log.position.w));
+		}
+	}
+	else
+	{
+		int num = 0;
+		do
+		{
+			for (int i = 0; i < columns; i++)
+			{
+				if (map[i][row + 1].type != BUSH)
+				{
+					int chance = rand() % 100 + 1;
+					if (chance >= 50 && num < maxLogs)
+					{
+						num++;
+						Log.position.x = map[i][row].position.x;
+						objects.push_back(Log);
+					}
+				}
+			}
+		} while (num < minLogs);
+	}
+}
+
+void addTrain(int row)
+{
+	Direction dir = (Direction)((rand() % 2) + 2);
+	Train.direction = dir;
+	Train.position.y = map[0][row].position.y;
+	Train.tile.y = row;
+	Train.timer = ((rand() % 5) + 2) * FPS;
+
+	objects.push_back(Train);
+	if (dir == LEFT)
+		objects.back().position.x = SCREEN_WIDTH + Train.position.w;
+	else
+		objects.back().position.x = -Train.position.w;
+
+	Light.tile.y = row;
+	Light.position.y = map[0][row].position.y + TILE_SIZE - Light.position.h;
+	Light.position.x = map[0][row].position.x + 20;
+	objects.push_back(Light);
+}
+
+void addCoins(int row)
+{
+	int num = 0;
+	Coin.position.y = map[0][row].position.y;
+	Coin.position.w = Coin.position.h = TILE_SIZE;
+	Coin.tile.y = row;
+
+	for (int i = 0; i < columns; i++)
+	{
+		if (map[i][row].type != BUSH)
+		{
+			int chance = rand() % 101;
+			if (chance >= 90 && num < maxCoins)
+			{
+				num++;
+				Coin.position.x = map[i][row].position.x;
+				objects.push_back(Coin);
+			}
+		}
+	}
+}
+
+void addObjects(int row)
+{
+	if (map[0][row].type != WATER) addCoins(row);
+	switch (map[0][row].type)
+	{
+	case ROAD:
+		addCar(row);
+		break;
+	case WATER:
+		addLogs(row);
+		break;
+	case RAIL:
+		addTrain(row);
+		break;
+	}
+}
+
+
 void initTiles()
 {
 	columns = ceil(SCREEN_WIDTH / TILE_SIZE);
-	rows = ceil(SCREEN_HEIGHT / TILE_SIZE) + 1;
+	rows = ceil(SCREEN_HEIGHT / TILE_SIZE) + 1;			//we add 1 more row so the tiles are generated before rendering
 	map = new Tile * [columns];
 	for (int i = 0; i < columns; i++)
 		map[i] = new Tile[rows];
 
-	for (int y = rows - 1; y >= 0; y--)
+	for (int y = rows - 1; y >= 0; y--)		//render bottom up
 	{
-		if (y >= rows - 2)
+		if (y >= rows - 2)					//2 first rows for our character when we start the game
 		{
 			for (int x = 0; x < columns; x++)
 			{
 				map[x][y] = (x == 0 || x == columns - 1) ? bush : grass;
 				map[x][y].position.x = x * TILE_SIZE;
-				map[x][y].position.y = (y - 1) * TILE_SIZE;
+				map[x][y].position.y = (y - 1) * TILE_SIZE;			//  y is the bottom of the tile so we use (y-1)
 			}
 		}
 		else
 		{
-			generateTiles(y);
-			addObjects(y);
+			generateTiles(y);			//set tiles in their right place
+			addObjects(y);				//add players, cars, logs, etc
 		}
 	}
 }
+
 
 void drawTiles()
 {
@@ -178,11 +361,26 @@ void drawObjects()
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (objects[i].direction == LEFT)
-			draw(objects[i].texture, &objects[i].position);
+			draw(objects[i].texture, &objects[i].position);		// if cars/trains go from right --> left then render the original photo
 		else
-			drawEx(objects[i].texture, &objects[i].position, SDL_FLIP_HORIZONTAL);
+			drawEx(objects[i].texture, &objects[i].position, SDL_FLIP_HORIZONTAL);		//else render the flipped photo
 	}
 }
+
+void draw()
+{
+	drawTiles();
+	if (state == GAME_OVER) draw(Player.texture, &Player.position);		// If player lose, Draw it Under Objects!!
+	drawObjects();
+
+	if (state != GAME_OVER) draw(Player.texture, &Player.position);		// But If It is alive , Draw It top of Objects!
+	draw(ScoreText.texture, &ScoreText.position);
+
+	Coin.position = { SCREEN_WIDTH - 75, 0, 84, 84 };
+	draw(Coin.texture, &Coin.position);
+	draw(CoinText.texture, &CoinText.position);
+}
+
 
 void update()
 {
@@ -359,183 +557,6 @@ void adjustCameraSpeed()					//adjust the screen's render to follow player's pos
 	}
 }
 
-void generateTiles(int row)
-{
-	TileType rowType = (TileType)(rand() % 4);
-	int rowChance = rand() % 100 + 1;
-	int Trees = 0;
-	for (int x = 0; x < columns; x++)
-	{
-		if (rowChance <= 50 /*rowType == GRASS*/)
-		{
-			int chance = rand() % 100 + 1;
-			if (x == 0 || x == columns - 1)
-				map[x][row] = bush;
-			else
-			{
-				if (chance >= 80 && Trees < maxBushes)
-				{
-					map[x][row] = bush;
-					Trees++;
-				}
-				else map[x][row] = grass;
-			}
-		}
-		else if (rowChance <= 70) map[x][row] = road;		//rowType == ROAD
-		else if (rowChance <= 75) map[x][row] = rail;		//rowType == RAIL
-		else if (rowChance <= 100) map[x][row] = water;		//rowType == WATER
-
-		map[x][row].position.x = x * TILE_SIZE;
-		map[x][row].position.y = map[x][row + 1].position.y - TILE_SIZE;
-	}
-}
-
-void addObjects(int row)
-{
-	if (map[0][row].type != WATER) addCoins(row);
-	switch (map[0][row].type)
-	{
-		case ROAD:
-			addCar(row);
-			break;
-		case WATER:
-			addLogs(row);
-			break;
-		case RAIL:
-			addTrain(row);
-			break;
-	}
-}
-
-void addCar(int row) {
-	Direction dir = (Direction)((rand() % 2) + 2);
-	Car.direction = dir;
-	Car.position.y = map[0][row].position.y + 6;
-	Car.tile.y = row;
-	Car.moveSpeed = (rand() % 5 + 2) * (dir == RIGHT ? 1 : -1);
-	int num = (rand() % 3) + 1;
-	int space = (SCREEN_WIDTH - ((num - 1) * Car.position.w)) / num;
-	int randPos = rand() % SCREEN_WIDTH;
-	for (int i = 0; i < num; i++)
-	{
-		objects.push_back(Car);
-		if (dir == LEFT)
-			objects.back().position.x = SCREEN_WIDTH + (i * (space + Car.position.w)) - randPos;
-		else
-			objects.back().position.x = -Car.position.w - (i * (space + Car.position.w)) + randPos;
-		short int tex = rand() % 3;
-		switch (tex)
-		{
-			case 1:
-				objects.back().texture = car2;
-				break;
-			case 2:
-				objects.back().texture = car3;
-				break;
-		}
-	}
-}
-
-void addLogs(int row)
-{
-	Log.position.y = map[0][row].position.y;
-	Log.tile.y = row;
-	if (map[0][row + 1].type == WATER)			// Direction of two rivers should be diffrent.
-	{
-		for (int i = objects.size() - 1; i >= 0; i--)
-		{
-			if (objects[i].tile.y == row + 1 && objects[i].type == LOG)
-			{
-				Log.direction = (objects[i].direction == LEFT ? RIGHT : LEFT);
-				Log.isMoving = (objects[i].isMoving ? rand() % 2 : true);		//We Can't Have Two Stopped Rivers
-				break;
-			}
-		}
-	}
-	else
-	{
-		Log.isMoving = rand() % 2;
-		Log.direction = (Direction)((rand() % 2) + 2);
-	}
-
-	if (Log.isMoving)
-	{
-		Log.moveSpeed = (rand() % 3 + 1) * (Log.direction == RIGHT ? 1 : -1);
-		int num = (rand() % 4) + 3;
-		int space = (SCREEN_WIDTH - ((num - 1) * Log.position.w)) / num;
-		int randPos = rand() % 200;
-		for (int i = 0; i < num; i++)
-		{
-			objects.push_back(Log);
-			if (Log.direction == LEFT)
-				objects.back().position.x = randPos + (i * (space + Log.position.w));
-			else
-				objects.back().position.x = SCREEN_WIDTH - randPos - (i * (space + Log.position.w));
-		}
-	}
-	else
-	{
-		int num = 0;
-		do
-		{
-			for (int i = 0; i < columns; i++)
-			{
-				if (map[i][row + 1].type != BUSH)
-				{
-					int chance = rand() % 100 + 1;
-					if (chance >= 50 && num < maxLogs)
-					{
-						num++;
-						Log.position.x = map[i][row].position.x;
-						objects.push_back(Log);
-					}
-				}
-			}
-		} while (num < minLogs);
-	}
-}
-
-void addTrain(int row)
-{
-	Direction dir = (Direction)((rand() % 2) + 2);
-	Train.direction = dir;
-	Train.position.y = map[0][row].position.y;
-	Train.tile.y = row;
-	Train.timer = ((rand() % 5) + 2) * FPS;
-
-	objects.push_back(Train);
-	if (dir == LEFT)
-		objects.back().position.x = SCREEN_WIDTH + Train.position.w;
-	else
-		objects.back().position.x = -Train.position.w;
-
-	Light.tile.y = row;
-	Light.position.y = map[0][row].position.y + TILE_SIZE - Light.position.h;
-	Light.position.x = map[0][row].position.x + 20;
-	objects.push_back(Light);
-}
-
-void addCoins(int row)
-{
-	int num = 0;
-	Coin.position.y = map[0][row].position.y;
-	Coin.position.w = Coin.position.h = TILE_SIZE;
-	Coin.tile.y = row;
-
-	for (int i = 0; i < columns; i++)
-	{
-		if (map[i][row].type != BUSH)
-		{
-			int chance = rand() % 101;
-			if (chance >= 90 && num < maxCoins)
-			{
-				num++;
-				Coin.position.x = map[i][row].position.x;
-				objects.push_back(Coin);
-			}
-		}
-	}
-}
 
 void deleteObjects()
 {
@@ -545,19 +566,6 @@ void deleteObjects()
 	}
 }
 
-void draw()
-{
-	drawTiles();
-	if (state == GAME_OVER) draw(Player.texture, &Player.position);		// If player lose, Draw it Under Objects!!
-	drawObjects();
-
-	if (state != GAME_OVER) draw(Player.texture, &Player.position);		// But If It is alive , Draw It top of Objects!
-	draw(ScoreText.texture, &ScoreText.position);
-
-	Coin.position = { SCREEN_WIDTH - 75, 0, 84, 84 };
-	draw(Coin.texture, &Coin.position);
-	draw(CoinText.texture, &CoinText.position);
-}
 
 void start()
 {
@@ -568,6 +576,17 @@ void start()
 	if (clickOnButton(&PlayerChooseButton.position)) state = CHOOSE_PLAYER;
 	else if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_LEFT)
 		state = PLAY;
+}
+
+bool clickOnButton(SDL_Rect* r)
+{
+	SDL_Point mouse_point = { g_event.motion.x , g_event.motion.y };
+	if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_LEFT && SDL_PointInRect(&mouse_point, r))
+	{
+		playSfx(clickSound, 0);
+		return true;
+	}
+	return false;
 }
 
 void choose_player()
@@ -608,7 +627,8 @@ void choose_player()
 	}
 }
 
-void play() {
+void play()
+{
 	if (Player.isMoving)
 	{
 		switch (Player.direction)
@@ -621,7 +641,6 @@ void play() {
 					score++;
 					Player.tile.y--;
 					Player.position.y = map[Player.tile.x][Player.tile.y].position.y;
-					//Player.position.x = map[Player.tile.x][Player.tile.y].position.x;
 					if (map[Player.tile.x][Player.tile.y].type == ROAD) playSfx(Car.sfx, 0);
 					else if (map[Player.tile.x][Player.tile.y].type == WATER) playSfx(Log.sfx, 0);
 				}
@@ -703,18 +722,21 @@ void play() {
 
 void updateScore()
 {
+	//UPDATE SCORE
 	if (score > maxScore) maxScore = score;
 	string all = to_string(maxScore);
 	strcpy_s(chars, 10, all.c_str());
 
-	//Destroy Perivious Texture And Make A New
+	//Destroy Previous Texture And Make A New
 	SDL_DestroyTexture(ScoreText.texture);
 	ScoreText.texture = loadFont(font, chars, 255, 255, 255);
 
+
+	//UPDATE COINS
 	all = to_string(coins);
 	strcpy_s(chars, 10, all.c_str());
 
-	//Destroy Perivious Texture And Make A New
+	//Destroy Previous Texture And Make A New
 	SDL_DestroyTexture(CoinText.texture);
 	CoinText.texture = loadFont(font, chars, 253, 230, 75);
 }
@@ -771,20 +793,10 @@ void game_over()
 	}
 }
 
+
 void destroyTiles() {
 	for (int i = 0; i < rows; i++)
 		delete[] map[i];
 
 	delete[] map;
-}
-
-bool clickOnButton(SDL_Rect* r)
-{
-	SDL_Point mouse_point = { g_event.motion.x , g_event.motion.y };
-	if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_LEFT && SDL_PointInRect(&mouse_point, r))
-	{
-		playSfx(clickSound, 0);
-		return true;
-	}
-	return false;
 }
