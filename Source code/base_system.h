@@ -15,7 +15,7 @@ struct Object
 	SDL_Texture* texture;
 	ObjectType type;			//types of objects: cars, logs, coins, trains, etc
 	SDL_Point tile;				//coordinates of objects
-	bool isMoving = false;		//check whether the objects (logs) are moving or not
+	bool isMoving = false;		//check whether the objects (logs, player) are moving or not
 	Direction direction;		//direction of objects
 	Mix_Chunk* sfx = NULL;		//sounds that objects create (sfx)
 
@@ -83,12 +83,12 @@ void load();									//load every media that needed
 
 void generateTiles(int);						//generate all types of tiles
 void addCar(int);								//add cars
-void addLogs(int);								//COPY FUNCTION - add logs to the river (water)
+void addLogs(int);								//add logs to the river (water)
 void addTrain(int);								//add trains
 void addCoins(int);								//add coins
 void addObjects(int);							//add every objects
 
-void initTiles();								//get everything generated and added on the screen
+void initTiles();								//get tiles' position generated and added on the screen
 
 void update();									//update everything: state, render, player's action
 void checkPlayerStatus();						//check player's state: on logs?, fall into water?, crashed?, in/out of the screen?

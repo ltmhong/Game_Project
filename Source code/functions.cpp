@@ -338,7 +338,7 @@ void initTiles()
 			{
 				map[x][y] = (x == 0 || x == columns - 1) ? bush : grass;
 				map[x][y].position.x = x * TILE_SIZE;
-				map[x][y].position.y = (y - 1) * TILE_SIZE;			//  y is the bottom of the tile so we use (y-1)
+				map[x][y].position.y = (y - 1) * TILE_SIZE;			//  y - 1 == row - 2
 			}
 		}
 		else
@@ -453,7 +453,7 @@ void update()
 		}
 	}
 
-	if (map[0][rows - 1].position.y > SCREEN_HEIGHT)
+	if (map[0][rows - 1].position.y > SCREEN_HEIGHT)			//keep rendering the next row
 	{
 		for (int y = rows - 1; y > 0; y--)
 			for (int x = 0; x < columns; x++) map[x][y] = map[x][y - 1];
@@ -574,7 +574,7 @@ void start()
 	draw(PlayerChooseButton.texture, &PlayerChooseButton.position);
 
 	if (clickOnButton(&PlayerChooseButton.position)) state = CHOOSE_PLAYER;
-	else if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_LEFT)
+	else if (g_event.type == SDL_MOUSEBUTTONDOWN && g_event.button.button == SDL_BUTTON_RIGHT)
 		state = PLAY;
 }
 
@@ -623,7 +623,7 @@ void choose_player()
 		SDL_SetRenderDrawColor(g_renderer, 255, 255, 255, 255);
 		SDL_RenderDrawRect(g_renderer, &PlayerButton.position);
 		draw(PlayerButton.texture, &PlayerButton.position);
-		PlayerButton.position.x += 150;
+		PlayerButton.position.x += 150;									//space between boxes
 	}
 }
 

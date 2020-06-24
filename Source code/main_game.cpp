@@ -4,6 +4,20 @@
 
 
 
+//REFERENCES
+
+/*
+	LOGIC FOR SETTING DEFAULTED POSITION FOR THE CHARACTER (WHEN STARTING GAME)
+		https://www.youtube.com/watch?v=06-ZvYmSeus (The Coding Train)
+
+	HOW TO USE DEQUE
+		1. https://www.youtube.com/watch?v=gyb8y-vK_g8 (NVitanovic)
+		2. https://www.youtube.com/watch?v=MRzl0Is_Nd8 (NVitanovic)
+		3. https://www.youtube.com/watch?v=NzozgsaWwQM (NVitanovic)
+*/
+
+
+
 int main(int argc, char* argv[])
 {
 	init();

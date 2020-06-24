@@ -1,0 +1,12 @@
+﻿  functions.cpp
+D:\Git\Game_Project\Source code\functions.cpp(327,16): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Git\Game_Project\Source code\functions.cpp(328,41): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Git\Game_Project\Source code\functions.cpp(361,20): warning C4018: '<': signed/unsigned mismatch
+D:\Git\Game_Project\Source code\functions.cpp(393,20): warning C4018: '<': signed/unsigned mismatch
+D:\Git\Game_Project\Source code\functions.cpp(464,21): warning C4018: '<': signed/unsigned mismatch
+D:\Git\Game_Project\Source code\functions.cpp(493,20): warning C4018: '<': signed/unsigned mismatch
+  global.cpp
+  main_game.cpp
+D:\Git\Game_Project\Source code\main_game.cpp(26,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
+  Cross _the_road.vcxproj -> D:\Git\Game_Project\Debug\Cross _the_road.exe
