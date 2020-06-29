@@ -1,2 +1,0 @@
-D:\Git\Game_Project\Debug\Cross _the_road.exe
-D:\Git\Game_Project\Debug\Cross _the_road.pdb
